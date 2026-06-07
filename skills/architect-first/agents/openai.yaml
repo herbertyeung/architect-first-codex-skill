@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architect First"
+  short_description: "Design architecture before implementation"
+  default_prompt: "Use $architect-first to analyze requirements, propose architecture and files, then wait for approval before editing."
