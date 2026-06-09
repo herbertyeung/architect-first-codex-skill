@@ -13,21 +13,23 @@ if ([string]::IsNullOrWhiteSpace($CodexHome)) {
 }
 
 $repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$source = Join-Path $repoRoot "skills\architect-first"
+$sourceRoot = Join-Path $repoRoot "skills"
 $targetRoot = Join-Path $CodexHome "skills"
-$target = Join-Path $targetRoot "architect-first"
 
-if (-not (Test-Path $source)) {
-    throw "Skill source not found: $source"
+if (-not (Test-Path $sourceRoot)) {
+    throw "Skills source directory not found: $sourceRoot"
 }
 
 New-Item -ItemType Directory -Force $targetRoot | Out-Null
 
-if (Test-Path $target) {
-    Remove-Item -LiteralPath $target -Recurse -Force
+$skills = Get-ChildItem -LiteralPath $sourceRoot -Directory
+foreach ($skill in $skills) {
+    $target = Join-Path $targetRoot $skill.Name
+    if (Test-Path $target) {
+        Remove-Item -LiteralPath $target -Recurse -Force
+    }
+
+    Copy-Item -LiteralPath $skill.FullName -Destination $target -Recurse
+    Write-Host "Installed $($skill.Name) skill to: $target"
 }
-
-Copy-Item -LiteralPath $source -Destination $target -Recurse
-
-Write-Host "Installed architect-first skill to: $target"
 Write-Host "Restart Codex CLI/Desktop if it was already running."

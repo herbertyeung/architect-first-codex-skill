@@ -1,0 +1,4 @@
+interface:
+  display_name: "Production Engineering Review"
+  short_description: "Review production risks before coding"
+  default_prompt: "Use $production-engineering-review to review production risks, design options, tests, and rollback strategy before implementation."
